@@ -42,14 +42,14 @@ class Optimize:
 
     # returns true if language that is searched afte is within line
     def isLanguage(self, content: str) -> bool:
-        return bool(re.search(self.__langExpression, content))
+        return bool(self.__langExpression.search(content))
 
     # r"..." is needed for parameter cause of non escaping
     def setLangExpression(self, langExpression: str):
-        self.__langExpression: str = langExpression
+        self.__langExpression: re = re.compile(langExpression)
 
     def setSplitExpression(self, splitExpression: str):
-        self.__splitExpression: str = splitExpression
+        self.__splitExpression: re = re.compile(splitExpression)
 
     def setIncludeFilter(self, includeFilter: list[str]):
         self.__includeFilter: list[str] = includeFilter
@@ -63,7 +63,7 @@ class Optimize:
 
     # returnes a 2d list that is based on origin
     def setSplitLines(self) -> list[list[str]]:
-        self.__splitLines: list[list[str]] = [re.split(self.__splitExpression, line) for line in self.__lines] 
+        self.__splitLines: list[list[str]] = [self.__splitExpression.search(line) for line in self.__lines] 
 
     # for repositioning within origin, if reconstruct method is called
     def setIndicies(self, indicies: list[list[int]]):
