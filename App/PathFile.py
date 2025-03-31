@@ -1,12 +1,10 @@
 from Resources.HandleFile import HandleFile
 
+# returned path
 class PathFile(HandleFile):
-    def __init__(self):
-        self.__pathFile: str = "filenames.txt"
-        super().__init__(self.__pathFile)
+    def __init__(self, filename: str):
+        super().__init__(filename)
 
+    # returned the file path without formating
     def read(self):
-        return super().read()
-    
-    def write(self, lines):
-        return super().write(lines)
+        return [path.strip() for path in super().read()]
