@@ -11,21 +11,30 @@ class Main:
         }
         self.__paths: list[str] = PathFile("filenames").read()
         self.__logFile: LogFile = LogFile("logProgress.txt")
-        self.__batchTranslate: BatchTranslate = BatchTranslate(r"[ぁ-んァ-ン一-龥]+", r"(\{[^}]+\}|%[^%]+%)", ["PRINT"], ["{", "}"], 3000)
+        self.__batchTranslate: BatchTranslate = BatchTranslate(r"[ぁ-んァ-ン一-龥]+",
+                                                               r"(\{[^}]+\}|%[^%]+%)",
+                                                               ["PRINT"], ["{", "}"], 3000)
 
     # translate 'self.__paths' in lines 
     def makeTranslations(self):
         for path in self.__paths:
             try:
+                self.makeResponse(f"Starts translation of *{path}*")
                 transFile: TransFile = TransFile(path)
                 # file not found; skip this file
                 if not transFile.validate:
-                    raise f"File '{path}' not found"
+                    raise FileNotFoundError(f"File *{path}* not found")
                 lines: list[str] = transFile.read()
-                transFile.write(self.__batchTranslate.translate(lines))
+                # if already translated skip the writing part
+                if lines:
+                    transFile.write(self.__batchTranslate.translate(lines))
                 self.makeResponse(f"Translation of *{path}* is finished")
+            except FileNotFoundError as e:
+                self.makeResponse(f"{e}")
+                continue
             except Exception as e:
-                print(f"Error occurred '{e}'")
+                print(f"Main error occurred: *{e}*")
+                exit()
 
     # for printing and saving into the log file
     def makeResponse(self, response: str):
