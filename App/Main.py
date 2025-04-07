@@ -1,24 +1,55 @@
-from PathFile import PathFile
+# from PathFile import PathFile
+from GetPaths import GetPaths
 from TransFile import TransFile
+from LogFile import LogFile
 from BatchTranslate import BatchTranslate
 
 class Main:
     def __init__(self):
-        self.__paths: list[str] = PathFile("filenames").read()
-        self.__batchTranslate: BatchTranslate = BatchTranslate(r"[\u3040-\u30FF\u4E00-\u9FFF]+", r"(\{[^}]+\}|%[^%]+%)", ["PRINT"], ["{", "}"], 3000)
-
+        # for replacing code breaking translated stuff into non code breaking stuff
+        self.__replaceDict: dict[str, str] = {
+            '"': r"\"",
+            "'": r"\'"
+        }
+        #self.__paths: list[str] = PathFile("filenames").read()
+        # dict[str, str] -> {sourcePath: translationPath}
+        self.__paths: dict[str, str] = GetPaths().returnPaths()
+        self.__logFile: LogFile = LogFile("logProgress.txt")
+        self.__batchTranslate: BatchTranslate = BatchTranslate(r"[ぁ-んァ-ン一-龥]+", 
+                                                               r'(print\("|"\))', # for splitting lines 
+                                                               r'print\("([^"]+)"\)', # to look if the line is even worth to translate !
+                                                               ["(", ")", "'", "{", "}"], # exclusion of some symbols
+                                                               self.__replaceDict,
+                                                               1500, 
+                                                               self.__logFile)
     # translate 'self.__paths' in lines 
     def makeTranslations(self):
-        for path in self.__paths:
+        self.makeResponse(f"Source: *{self.__paths}*")
+        for sourcePath, translationPath in self.__paths.items():
             try:
-                transFile: TransFile = TransFile(path)
+                self.makeResponse(f"Starts translation of *{sourcePath}*")
+                sourceFile: TransFile = TransFile(sourcePath)
+                transFile: TransFile = TransFile(translationPath)
                 # file not found; skip this file
-                if not transFile.validate:
-                    raise f"File '{path}' not found"
-                lines: list[str] = transFile.read()
-                transFile.write(self.__batchTranslate.translate(lines))
+                if not sourceFile.validate:
+                    raise FileNotFoundError(f"File *{sourcePath}* not found - will be skipped")
+                lines: list[str] = sourceFile.read()
+                # if already translated skip the writing part
+                if lines:
+                    transFile.write(self.__batchTranslate.translate(lines))
+                self.makeResponse(f"Translation of *{sourcePath}* is finished")
+            except FileNotFoundError as e:
+                self.makeResponse(f"{e}")
+                continue
             except Exception as e:
-                print(f"Error occurred '{e}'")
+                print(f"Main error occurred: *{e}*")
+                exit()
+
+    # for printing and saving into the log file
+    def makeResponse(self, response: str):
+        self.__logFile.add(response)
+        print(response)
 
 if __name__ == "__main__":
     main: Main = Main()
+    main.makeTranslations()
