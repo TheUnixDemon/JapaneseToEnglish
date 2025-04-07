@@ -1,4 +1,5 @@
-from PathFile import PathFile
+# from PathFile import PathFile
+from GetPaths import GetPaths
 from TransFile import TransFile
 from LogFile import LogFile
 from BatchTranslate import BatchTranslate
@@ -9,7 +10,9 @@ class Main:
             '"': r"\"",
             "'": r"\'"
         }
-        self.__paths: list[str] = PathFile("filenames").read()
+        #self.__paths: list[str] = PathFile("filenames").read()
+        # dict[str, str] -> {sourcePath: translationPath}
+        self.__paths: dict[str, str] = GetPaths().returnPaths()
         self.__logFile: LogFile = LogFile("logProgress.txt")
         self.__batchTranslate: BatchTranslate = BatchTranslate(r"[ぁ-んァ-ン一-龥]+",
                                                                r"(\{[^}]+\}|%[^%]+%)",
@@ -17,18 +20,19 @@ class Main:
 
     # translate 'self.__paths' in lines 
     def makeTranslations(self):
-        for path in self.__paths:
+        self.makeResponse(f"Source: *{self.__sourcePaths()}*")
+        for sourcePath, translationPath in self.__paths.items():
             try:
-                self.makeResponse(f"Starts translation of *{path}*")
-                transFile: TransFile = TransFile(path)
+                self.makeResponse(f"Starts translation of *{sourcePath}*")
+                transFile: TransFile = TransFile(translationPath)
                 # file not found; skip this file
                 if not transFile.validate:
-                    raise FileNotFoundError(f"File *{path}* not found")
+                    raise FileNotFoundError(f"File *{sourcePath}* not found - will be skipped")
                 lines: list[str] = transFile.read()
                 # if already translated skip the writing part
                 if lines:
                     transFile.write(self.__batchTranslate.translate(lines))
-                self.makeResponse(f"Translation of *{path}* is finished")
+                self.makeResponse(f"Translation of *{translationPath}* is finished")
             except FileNotFoundError as e:
                 self.makeResponse(f"{e}")
                 continue
