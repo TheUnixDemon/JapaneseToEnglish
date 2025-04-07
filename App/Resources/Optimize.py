@@ -12,6 +12,7 @@ class Optimize:
     def optimize(self, lines: list[str]) -> list[str]:
         self.setLines(lines)
         # splits 'lines' after self.__splitExpression
+        print(lines)
         self.setSplitLines()
         # for mapping positioning
         indicies: list[list[int]] = []
@@ -19,7 +20,7 @@ class Optimize:
         # i: in line; len(line) is identical to len(self.__splitLines)
         for i, line in enumerate(lines):
             # if it starts with a comment mark
-            if line.strip().startswith(";"):
+            if line.strip().startswith("#"):
                 continue
             # has to be the searched language with included expressions
             if not self.isLanguage(line) or not self.__includeExpression.search(line):
@@ -72,6 +73,7 @@ class Optimize:
     # returnes a 2d list that is based on origin
     def setSplitLines(self) -> list[list[str]]:
         self.__splitLines: list[list[str]] = [self.__splitExpression.split(line) for line in self.__lines] 
+        print(self.__splitLines)
 
     # for repositioning within origin, if reconstruct method is called
     def setIndicies(self, indicies: list[list[int]]):

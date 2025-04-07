@@ -7,7 +7,7 @@ class GetPaths:
         self.checkDirectories()
 
     # creates a dict of paths to all files in *self.__sourceDirectory*
-    def getPaths(self) -> dict[str, str]:
+    def returnPaths(self) -> dict[str, str]:
         try:
             paths: dict[str, str] = {}
             # root: current folder; dirs: all recursive folders; files: only filenames

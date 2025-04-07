@@ -6,6 +6,7 @@ from BatchTranslate import BatchTranslate
 
 class Main:
     def __init__(self):
+        # for replacing code breaking translated stuff into non code breaking stuff
         self.__replaceDict: dict[str, str] = {
             '"': r"\"",
             "'": r"\'"
@@ -14,25 +15,29 @@ class Main:
         # dict[str, str] -> {sourcePath: translationPath}
         self.__paths: dict[str, str] = GetPaths().returnPaths()
         self.__logFile: LogFile = LogFile("logProgress.txt")
-        self.__batchTranslate: BatchTranslate = BatchTranslate(r"[ぁ-んァ-ン一-龥]+",
-                                                               r"(\{[^}]+\}|%[^%]+%)",
-                                                               ["PRINT"], ["{", "}"], 3000)
-
+        self.__batchTranslate: BatchTranslate = BatchTranslate(r"[ぁ-んァ-ン一-龥]+", 
+                                                               r'(print\("|"\))', # for splitting lines 
+                                                               r'print\("([^"]+)"\)', # to look if the line is even worth to translate !
+                                                               ["(", ")", "'", "{", "}"], # exclusion of some symbols
+                                                               self.__replaceDict,
+                                                               1500, 
+                                                               self.__logFile)
     # translate 'self.__paths' in lines 
     def makeTranslations(self):
-        self.makeResponse(f"Source: *{self.__sourcePaths()}*")
+        self.makeResponse(f"Source: *{self.__paths}*")
         for sourcePath, translationPath in self.__paths.items():
             try:
                 self.makeResponse(f"Starts translation of *{sourcePath}*")
+                sourceFile: TransFile = TransFile(sourcePath)
                 transFile: TransFile = TransFile(translationPath)
                 # file not found; skip this file
-                if not transFile.validate:
+                if not sourceFile.validate:
                     raise FileNotFoundError(f"File *{sourcePath}* not found - will be skipped")
-                lines: list[str] = transFile.read()
+                lines: list[str] = sourceFile.read()
                 # if already translated skip the writing part
                 if lines:
                     transFile.write(self.__batchTranslate.translate(lines))
-                self.makeResponse(f"Translation of *{translationPath}* is finished")
+                self.makeResponse(f"Translation of *{sourcePath}* is finished")
             except FileNotFoundError as e:
                 self.makeResponse(f"{e}")
                 continue
@@ -47,3 +52,4 @@ class Main:
 
 if __name__ == "__main__":
     main: Main = Main()
+    main.makeTranslations()

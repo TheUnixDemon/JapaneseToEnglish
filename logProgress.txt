@@ -1,0 +1,45 @@
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+[Errno 2] No such file or directory: './Translation/example.py'
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *166*, translated ones: *166*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
