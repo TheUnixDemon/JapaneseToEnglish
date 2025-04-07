@@ -43,3 +43,11 @@ Source: *{'./Source/example.py': './Translation/example.py'}*
 Starts translation of *./Source/example.py*
 Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
 Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished
+Source: *{'./Source/example.py': './Translation/example.py'}*
+Starts translation of *./Source/example.py*
+Number of segments: *16*, translated ones: *16*, time remaining: *0:0*
+Translation of *./Source/example.py* is finished

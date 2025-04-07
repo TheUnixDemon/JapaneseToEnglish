@@ -9,10 +9,10 @@ class Optimize:
         self.setExcludeFilter(excludeFilter)
 
     # splits, validates and remembers positioning of data that is to be translated
+    # returnes all segments in file that are to translate
     def optimize(self, lines: list[str]) -> list[str]:
         self.setLines(lines)
         # splits 'lines' after self.__splitExpression
-        print(lines)
         self.setSplitLines()
         # for mapping positioning
         indicies: list[list[int]] = []
@@ -73,7 +73,6 @@ class Optimize:
     # returnes a 2d list that is based on origin
     def setSplitLines(self) -> list[list[str]]:
         self.__splitLines: list[list[str]] = [self.__splitExpression.split(line) for line in self.__lines] 
-        print(self.__splitLines)
 
     # for repositioning within origin, if reconstruct method is called
     def setIndicies(self, indicies: list[list[int]]):
